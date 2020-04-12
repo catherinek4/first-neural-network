@@ -30,3 +30,34 @@ print("train_set_x shape: " + str(train_set_x_orig.shape))
 print("train_set_y shape: " + str(train_set_y.shape))
 print("test_set_x shape: " + str(test_set_x_orig.shape))
 print("test_set_y shape: " + str(test_set_y.shape))
+
+
+# Reshape the training and test examples
+
+train_set_x_flatten = train_set_x_orig.reshape(train_set_x_orig.shape[0], -1).T
+test_set_x_flatten = test_set_x_orig.reshape(test_set_x_orig.shape[0], -1).T
+
+print("train_set_x_flatten shape: " + str(train_set_x_flatten.shape))
+print("test_set_x_flatten shape: " + str(test_set_x_flatten.shape))
+
+train_set_x = train_set_x_flatten / 255
+test_set_x = test_set_x_flatten / 255
+
+
+def sigmoid(z):
+    s = 1 / (np.exp(-z)+1)
+    return s
+
+
+def initialize_with_zeros(dim):
+    w = np.zeros((dim, 1))
+    b = 0
+    return w, b
+
+
+def propagate(w, b, X, Y):
+    m = X.shape[0]
+    A = sigmoid(w.T*X + b)
+    cost = -1/m * np.sum(Y*np.log(a) + (1-Y)*np.log(1-a))
+    dw = 1/m * np.dot(X, (a - Y).T)  # X * dz (a - Y)
+    db = 1/m * np.sum(a - Y)  # dz (a - Y)
