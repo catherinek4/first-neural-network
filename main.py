@@ -58,6 +58,6 @@ def initialize_with_zeros(dim):
 def propagate(w, b, X, Y):
     m = X.shape[0]
     A = sigmoid(w.T*X + b)
-    cost = -1/m * np.sum(Y*np.log(a) + (1-Y)*np.log(1-a))
-    dw = 1/m * np.dot(X, (a - Y).T)  # X * dz (a - Y)
-    db = 1/m * np.sum(a - Y)  # dz (a - Y)
+    cost = -1/m * np.sum(Y*np.log(A) + (1-Y)*np.log(1-A))
+    dw = 1/m * np.dot(X, (A - Y).T)  # X * dz (a - Y)
+    db = 1/m * np.sum(A - Y)  # dz (a - Y)
