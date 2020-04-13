@@ -57,7 +57,30 @@ def initialize_with_zeros(dim):
 
 def propagate(w, b, X, Y):
     m = X.shape[0]
-    A = sigmoid(w.T*X + b)
+    A = sigmoid(np.dot(w.T, X) + b)
     cost = -1/m * np.sum(Y*np.log(A) + (1-Y)*np.log(1-A))
     dw = 1/m * np.dot(X, (A - Y).T)  # X * dz (a - Y)
     db = 1/m * np.sum(A - Y)  # dz (a - Y)
+    grads = {"dw": dw, "db": db}
+    return grads, cost
+
+
+def optimize(w, b, X, Y, num_iterations, learning_rate, print_cost=False):
+    # will be used to plot the learning curve
+    costs = []
+
+    for i in range(num_iterations):
+        grads, cost = propagate(w, b, X, Y)
+        dw = grads["dw"]
+        db = grads["db"]
+        w -= (learning_rate * dw)
+        b -= (learning_rate * db)
+        costs.append(cost)
+
+        # print costs if the user wants
+        if print_cost and i % 100 == 0:
+            print(f"Cost after iteration {i} = {cost}")
+
+    grads = {"dw": dw, "db": db}
+    params = {"w": w, "b": b}
+    return params, grads, costs
